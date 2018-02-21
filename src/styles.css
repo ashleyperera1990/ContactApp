@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #333;
+  color: white;
+}
+
+.card {
+  background-color: #5c5c5c;
+}
+
+.form-row {
+  margin-bottom: 1rem;
+}
+
+.inner-nav {
+  overflow: hidden;
+}
+.inner-nav .buttons {
+  float: right;
+  overflow: hidden;
+}

@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="form-group">
+        <input class="form-control" type="text" placeholder="Search Messages"/>
+      </div>
+      <div class="card-body">
+        Messages List
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <div class="inner-nav p-2">
+      <div class="buttons justify-content-center">
+        <button class="btn btn-success btn-sm">New Message</button>
+        <button class="btn btn-primary btn-sm">Add / Save Message</button>
+        <button class="btn btn-danger btn-sm">Delete Message</button>
+      </div>
+    </div>
+    <form action="">
+      <div class="form-row">
+        <div class="col">
+          <label for="idContactSelect">Contact</label>
+          <select id="idContactSelect" class="form-control">
+            <option selected>Choose...</option>
+            <option>...</option>
+          </select>
+        </div>
+        <div class="col">
+          <label for="idTypeSelect">Type</label>
+          <select id="idTypeSelect" class="form-control">
+            <option selected>Choose...</option>
+            <option>...</option>
+          </select>
+        </div>
+        <div class="col">
+          <label for="idDateSelect">Date</label>
+          <input type="text" id="idDateSelect" class="form-control"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="idSubject">Subject</label>
+        <input type="text" class="form-control" placeholder="Subject" id="idSubject">
+      </div>
+      <div class="form-group">
+        <label for="idMessage">Message</label>
+        <textarea rows="10" class="form-control" id="idMessage"></textarea>
+      </div>
+    </form>
+  </div>
+</div>

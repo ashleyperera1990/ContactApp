@@ -6,6 +6,10 @@ body {
 
 .card {
   background-color: #5c5c5c;
+  height: 750px;
+}
+.card-body {
+  padding: 0.5rem;
 }
 
 .form-row {
@@ -18,4 +22,15 @@ body {
 .inner-nav .buttons {
   float: right;
   overflow: hidden;
+}
+
+.inner-nav .title {
+  float: left;
+}
+.sidebar {
+  padding: 0.5rem;
+}
+
+.list-group-item {
+  color: black;
 }

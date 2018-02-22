@@ -1,0 +1,65 @@
+<div class="inner-nav p-2">
+  <div class="buttons justify-content-center">
+    <button (click)="newReminder()" class="btn btn-success btn-sm">New Reminder</button>
+    <button (click)="saveOrUpdateReminder()" class="btn btn-primary btn-sm">Add / Save Reminder</button>
+    <button (click)="deleteReminder()" class="btn btn-danger btn-sm">Delete Reminder</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="sidebar">
+        <h3 style="text-align: center">Reminders</h3>
+        <input class="form-control" type="text" placeholder="Search Reminders"/>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <li class="list-group-item" *ngFor="let reminder of allReminders" (click)="selectReminder(reminder)">
+            {{ reminder.contact.firstName }} {{ reminder.contact.lastName }} - {{ reminder.subject }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="p-2">
+        <form action="">
+          <div class="form-row">
+            <div class="col">
+              <label for="idContactSelect">Contact</label>
+              <select [compareWith]="equals" id="idContactSelect" [(ngModel)]="selectedReminder.contact" name="contact"
+                      class="form-control">
+                <option *ngFor="let contact of allContacts" [ngValue]="contact">{{contact.firstName}} {{
+                  contact.lastName }}
+                </option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="idTypeSelect">Type</label>
+              <select [compareWith]="equals" id="idTypeSelect" [(ngModel)]="selectedReminder.type" name="type"
+                      class="form-control">
+                <option *ngFor="let type of reminderTypes" [ngValue]="type">{{type.typeName}}</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="idDateSelect">Date</label>
+              <input type="text" id="idDateSelect" [(ngModel)]="selectedReminder.date" name="date"
+                     class="form-control"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="idSubject">Subject</label>
+            <input type="text" class="form-control" option [(ngModel)]="selectedReminder.subject" name="subject"
+                   placeholder="Subject" id="idSubject">
+          </div>
+          <div class="form-group">
+            <label for="idMessage">Message</label>
+            <textarea rows="10" class="form-control" [(ngModel)]="selectedReminder.message" name="message"
+                      id="idMessage"></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

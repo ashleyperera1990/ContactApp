@@ -3,16 +3,18 @@ import {NgModule} from '@angular/core';
 
 
 import {AppComponent} from './app.component';
-import {ContactComponent} from './contact/contact.component';
-import {ReminderComponent} from './reminders/reminder.component';
+import {ContactComponent} from './components/contact/contact.component';
+import {ReminderComponent} from './components/reminders/reminder.component';
 import {RouterModule, Routes} from '@angular/router';
-import {NavigationComponent} from './navigation/navigation.component';
-import {ContactService} from './contact/contact.service';
+import {NavigationComponent} from './components/navigation/navigation.component';
+import {ContactService} from './service/contact.service';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {InMemoryDBService} from './in-memory-db-service';
-import {ReminderService} from './reminders/reminder.service';
+import {ReminderService} from './service/reminder.service';
+import {ContactFilterPipe} from './filter/contact-filter.pipe';
+import {ReminderFilterPipe} from './filter/reminder-filter.pipe';
 
 const appRoutes: Routes = [
   {path: '', component: ContactComponent},
@@ -28,7 +30,9 @@ const appRoutes: Routes = [
     AppComponent,
     ContactComponent,
     ReminderComponent,
-    NavigationComponent
+    NavigationComponent,
+    ContactFilterPipe,
+    ReminderFilterPipe
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

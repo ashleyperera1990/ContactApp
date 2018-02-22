@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Reminder} from './reminder.model';
+import {Reminder} from '../model/reminder.model';
 import {HttpClient} from '@angular/common/http';
-import {Contact} from '../contact/contact.model';
-import {ReminderType} from './reminder-type.model';
+import {Contact} from '../model/contact.model';
+import {ReminderType} from '../model/reminder-type.model';
 import {tap} from 'rxjs/operators';
 
 @Injectable()

@@ -10,11 +10,11 @@
     <div class="card">
       <div class="sidebar">
         <h3 style="text-align: center">Reminders</h3>
-        <input class="form-control" type="text" placeholder="Search Reminders"/>
+        <input class="form-control" type="text" [(ngModel)]="searchTerm" placeholder="Search Reminders"/>
       </div>
       <div class="card-body">
         <ul class="list-group">
-          <li class="list-group-item" *ngFor="let reminder of allReminders" (click)="selectReminder(reminder)">
+          <li class="list-group-item" *ngFor="let reminder of allReminders | reminderFilter: searchTerm" (click)="selectReminder(reminder)">
             {{ reminder.contact.firstName }} {{ reminder.contact.lastName }} - {{ reminder.subject }}
           </li>
         </ul>

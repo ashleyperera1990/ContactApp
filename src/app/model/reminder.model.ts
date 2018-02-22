@@ -1,4 +1,4 @@
-import {Contact} from '../contact/contact.model';
+import {Contact} from './contact.model';
 import {ReminderType} from './reminder-type.model';
 
 export class Reminder {

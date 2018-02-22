@@ -1,7 +1,7 @@
 import {InMemoryDbService} from 'angular-in-memory-web-api';
-import {Contact} from './contact/contact.model';
-import {Reminder} from './reminders/reminder.model';
-import {ReminderType} from './reminders/reminder-type.model';
+import {Contact} from './model/contact.model';
+import {Reminder} from './model/reminder.model';
+import {ReminderType} from './model/reminder-type.model';
 
 export class InMemoryDBService implements InMemoryDbService {
   createDb() {

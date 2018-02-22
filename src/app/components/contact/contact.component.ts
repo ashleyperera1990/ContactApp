@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ContactService} from './contact.service';
-import {Contact} from './contact.model';
-import {ReminderService} from '../reminders/reminder.service';
-import {Reminder} from '../reminders/reminder.model';
+import {ContactService} from '../../service/contact.service';
+import {Contact} from '../../model/contact.model';
+import {ReminderService} from '../../service/reminder.service';
+import {Reminder} from '../../model/reminder.model';
 import {NavigationExtras, Router} from '@angular/router';
 
 @Component({
@@ -15,6 +15,7 @@ export class ContactComponent implements OnInit {
   contactList: Contact[];
   selectedContact: Contact;
   selectedContactReminders: Reminder[];
+  searchTerm: string;
 
   constructor(private contactService: ContactService,
               private reminderService: ReminderService,

@@ -11,12 +11,12 @@
     <div class="card">
       <div class="sidebar">
         <h4 style="text-align: center">Contacts</h4>
-        <input class="form-control" type="text" placeholder="Search Contacts"/>
+        <input class="form-control" [(ngModel)]="searchTerm" type="text" placeholder="Search Contacts"/>
       </div>
       <div class="card-body">
         <ul class="list-group">
 
-          <li class="list-group-item" *ngFor="let contact of contactList" (click)="selectContact(contact)">
+          <li class="list-group-item" *ngFor="let contact of contactList | contactFilter: searchTerm" (click)="selectContact(contact)">
             {{ contact.firstName }} {{ contact.lastName }}
           </li>
         </ul>

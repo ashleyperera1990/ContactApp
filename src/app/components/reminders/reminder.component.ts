@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Reminder} from './reminder.model';
-import {ReminderService} from './reminder.service';
-import {Contact} from '../contact/contact.model';
-import {ContactService} from '../contact/contact.service';
-import {ReminderType} from './reminder-type.model';
+import {Reminder} from '../../model/reminder.model';
+import {ReminderService} from '../../service/reminder.service';
+import {Contact} from '../../model/contact.model';
+import {ContactService} from '../../service/contact.service';
+import {ReminderType} from '../../model/reminder-type.model';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -17,6 +17,7 @@ export class ReminderComponent implements OnInit {
   reminderTypes: ReminderType[];
   allReminders: Reminder[];
   selectedReminder: Reminder;
+  searchTerm: string;
 
   constructor(private reminderService: ReminderService,
               private contactService: ContactService,

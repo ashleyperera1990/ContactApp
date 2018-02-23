@@ -15,6 +15,9 @@ import {InMemoryDBService} from './in-memory-db-service';
 import {ReminderService} from './service/reminder.service';
 import {ContactFilterPipe} from './filter/contact-filter.pipe';
 import {ReminderFilterPipe} from './filter/reminder-filter.pipe';
+import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {DateFormatterService} from './service/date-formatter.service';
 
 const appRoutes: Routes = [
   {path: '', component: ContactComponent},
@@ -32,10 +35,12 @@ const appRoutes: Routes = [
     ReminderComponent,
     NavigationComponent,
     ContactFilterPipe,
-    ReminderFilterPipe
+    ReminderFilterPipe,
+    ConfirmationModalComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
+    NgbModule.forRoot(),
     BrowserModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
@@ -44,9 +49,13 @@ const appRoutes: Routes = [
   ],
   providers: [
     ContactService,
-    ReminderService
+    ReminderService,
+    DateFormatterService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ConfirmationModalComponent
+  ]
 })
 export class AppModule {
 }

@@ -5,6 +5,8 @@ import {HttpClient} from '@angular/common/http';
 import {Contact} from '../model/contact.model';
 import {ReminderType} from '../model/reminder-type.model';
 import {tap} from 'rxjs/operators';
+import {HTTP_HEADERS} from '../app-http.config';
+import {DateFormatterService} from './date-formatter.service';
 
 @Injectable()
 export class ReminderService {
@@ -14,11 +16,12 @@ export class ReminderService {
 
   remindersList: Reminder[];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private dateFormatter: DateFormatterService) {
   }
 
   getById(id): Observable<Reminder> {
-    return this.http.get<Reminder[]>(this.remindersUrl + '/' + id);
+    return this.http.get<Reminder>(this.remindersUrl + '/' + id);
   }
 
   getAllReminders(): Observable<Reminder[]> {
@@ -32,11 +35,10 @@ export class ReminderService {
   }
 
   getReminderTypes(): Observable<ReminderType[]> {
-    return this.http.get<Reminder[]>(this.reminderTypesUrl);
+    return this.http.get<ReminderType[]>(this.reminderTypesUrl);
   }
 
   saveOrUpdateReminder(reminder: Reminder): Observable<Reminder> {
-
     const index = this.remindersList.indexOf(reminder);
     if (index === -1) {
       return this.addReminder(reminder);
@@ -47,15 +49,16 @@ export class ReminderService {
 
   addReminder(reminder: Reminder): Observable<Reminder> {
     reminder.contactId = reminder.contact.id;
-    return this.http.post(this.remindersUrl, reminder);
+    return this.http.post<Reminder>(this.remindersUrl, reminder, HTTP_HEADERS);
   }
 
   updateReminder(reminder: Reminder): Observable<Reminder> {
-    return this.http.post(this.remindersUrl, reminder);
+
+    return this.http.put<Reminder>(this.remindersUrl, reminder, HTTP_HEADERS);
   }
 
   deleteReminder(reminder: Reminder): Observable<Reminder> {
     const url = this.remindersUrl + '/' + reminder.id;
-    return this.http.delete(url);
+    return this.http.delete<Reminder>(url, HTTP_HEADERS);
   }
 }

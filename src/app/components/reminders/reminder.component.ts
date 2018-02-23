@@ -1,10 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Reminder} from '../../model/reminder.model';
 import {ReminderService} from '../../service/reminder.service';
 import {Contact} from '../../model/contact.model';
 import {ContactService} from '../../service/contact.service';
 import {ReminderType} from '../../model/reminder-type.model';
 import {ActivatedRoute} from '@angular/router';
+import {ConfirmationModalComponent} from '../confirmation-modal/confirmation-modal.component';
+import { NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {
+  DELETE_REMINDER_CONFIRMATION_MODAL, DELETE_REMINDER_QUERY_MODAL, SAVE_REMINDER_MODAL,
+  UNSAVED_CHANGES_WARNING_MODAL
+} from '../confirmation-modal/confirmation-modal.data';
+import {DateFormatterService} from '../../service/date-formatter.service';
 
 @Component({
   selector: 'app-messages',
@@ -13,70 +21,93 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class ReminderComponent implements OnInit {
 
+  @ViewChild('reminderForm') form;
+
   allContacts: Contact[];
   reminderTypes: ReminderType[];
   allReminders: Reminder[];
   selectedReminder: Reminder;
   searchTerm: string;
 
+  dateModel: NgbDateStruct;
+
   constructor(private reminderService: ReminderService,
               private contactService: ContactService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private modalService: NgbModal,
+              public dateFormatter: DateFormatterService) {
   }
 
   ngOnInit() {
+    this.initialiseReminder();
+    this.loadRefData();
     const id = +this.route.snapshot.paramMap.get('id');
     const contactId = +this.route.snapshot.paramMap.get('contactId');
-
-    if (!id) {
-      this.initialiseReminder();
-    } else {
-      this.loadReminderFromId(id);
+    if (id) {
+      this.reminderService.getById(id)
+        .subscribe(reminder => this.selectedReminder = reminder);
     }
     if (contactId) {
-      this.initialiseReminderWithContact(contactId);
+      this.initialiseReminderWithContact(contactId)
+        .subscribe(contact => this.selectedReminder.contact = contact);
     }
     this.loadAllReminders();
-    this.loadAllReminderTypes();
-    this.loadAllContacts();
   }
 
   selectReminder(reminder: Reminder) {
     this.selectedReminder = reminder;
-  }
-
-  equals(com1, com2) {
-    return com1 && com2 && com1.id === com2.id;
+    this.dateModel = this.dateFormatter.parse(this.selectedReminder.date.toLocaleString());
   }
 
   newReminder() {
-    this.selectedReminder = new Reminder(null, null, null, null, null, null, null);
+    this.openModal(UNSAVED_CHANGES_WARNING_MODAL).result.then(() => {
+      this.initialiseReminder();
+      this.form.resetForm();
+    });
+  }
+
+  setReminderDate() {
+    const convertedDate = this.dateFormatter.format(this.dateModel);
+    this.selectedReminder.date = new Date(convertedDate);
   }
 
   saveOrUpdateReminder() {
-    this.reminderService.saveOrUpdateReminder(this.selectedReminder).subscribe(reminder => {
-      this.selectedReminder = reminder;
+    this.setReminderDate();
+    this.reminderService.saveOrUpdateReminder(this.selectedReminder).subscribe(() => {
       this.loadAllReminders();
+      this.openModal(SAVE_REMINDER_MODAL);
     });
   }
 
   deleteReminder() {
-    this.reminderService.deleteReminder(this.selectedReminder).subscribe(() => {
-      this.loadAllReminders();
-      this.initialiseReminder();
+    this.openModal(DELETE_REMINDER_QUERY_MODAL)
+      .result.then(() => {
+        this.reminderService.deleteReminder(this.selectedReminder).subscribe(() => {
+        this.loadAllReminders();
+        this.initialiseReminder();
+        this.form.resetForm();
+        this.openModal(DELETE_REMINDER_CONFIRMATION_MODAL);
+      });
     });
   }
 
-  loadAllContacts() {
-    this.reminderService.getReminderTypes().subscribe(types => this.reminderTypes = types);
+  loadRefData() {
+    this.loadAllContacts().subscribe(contacts => {
+      this.allContacts = contacts;
+      this.loadAllReminderTypes().subscribe(types => this.reminderTypes = types);
+    });
   }
 
   loadAllReminders() {
     this.reminderService.getAllReminders().subscribe(messages => this.allReminders = messages);
   }
 
+  loadAllContacts() {
+    return this.contactService.getAllContacts();
+  }
+
   loadAllReminderTypes() {
-    this.contactService.getAllContacts().subscribe(contacts => this.allContacts = contacts);
+    return this.reminderService.getReminderTypes();
   }
 
   initialiseReminder() {
@@ -84,11 +115,16 @@ export class ReminderComponent implements OnInit {
   }
 
   initialiseReminderWithContact(contactId) {
-    this.contactService.getById(contactId).subscribe(contact => this.selectedReminder.contact = contact);
+    return this.contactService.getById(contactId);
   }
 
-  loadReminderFromId(id) {
-    this.reminderService.getById(id).subscribe(reminder => this.selectedReminder = reminder);
+  openModal(data) {
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.data = data;
+    return modalRef;
   }
 
+  equals(com1, com2) {
+    return com1 && com2 && com1.id === com2.id;
+  }
 }

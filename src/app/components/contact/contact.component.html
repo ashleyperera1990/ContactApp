@@ -1,7 +1,7 @@
 <div class="inner-nav p-2">
   <div class="buttons justify-content-center">
-    <button (click)="initSelectedContact()" class="btn btn-success btn-sm">New Contact</button>
-    <button (click)="saveContact()" class="btn btn-primary btn-sm">Add / Save Contact</button>
+    <button (click)="newContact()" class="btn btn-success btn-sm">New Contact</button>
+    <button (click)="saveContact()" [disabled]="!contactForm.form.valid" class="btn btn-primary btn-sm">Add / Save Contact</button>
     <button (click)="deleteContact()" class="btn btn-danger btn-sm">Delete Contact</button>
   </div>
 </div>
@@ -27,49 +27,73 @@
     <div class="card">
       <div class="p-2">
         <h3>Contact Details</h3>
-        <form>
+        <form (ngSubmit)="onsubmit()" #contactForm="ngForm">
           <div class="form-row">
             <div class="col">
               <label for="idFirstName">First Name</label>
               <input type="text" [(ngModel)]="selectedContact.firstName" name="firstName" class="form-control"
-                     placeholder="First Name" id="idFirstName"/>
+                     placeholder="First Name" id="idFirstName" #firstName="ngModel" required/>
+              <div [hidden]="firstName.untouched || firstName.valid" class="alert-sm alert-danger">
+                First Name is required
+              </div>
             </div>
             <div class="col">
               <label for="idLastName">Last Name</label>
               <input type="text" [(ngModel)]="selectedContact.lastName" name="lastName" class="form-control"
-                     placeholder="Last Name" id="idLastName"/>
+                     placeholder="Last Name" id="idLastName" #lastName="ngModel" required/>
+              <div [hidden]="lastName.untouched || lastName.valid" class="alert-sm alert-danger">
+                Last Name is required
+              </div>
             </div>
           </div>
           <div class="form-group">
             <label for="idEmail">Email Address</label>
             <input type="text" [(ngModel)]="selectedContact.emailAddress" name="emailAddress" class="form-control"
-                   placeholder="Email Address" id="idEmail">
+                   placeholder="Email Address" id="idEmail" #email="ngModel" required>
+            <div [hidden]="email.untouched || email.valid" class="alert-sm alert-danger">
+              Last Name is required
+            </div>
           </div>
           <div class="form-group">
             <label for="idAddress1">Address Line 1</label>
             <input type="text" [(ngModel)]="selectedContact.address1" name="address1" class="form-control"
-                   placeholder="Address 1" id="idAddress1">
+                   placeholder="Address 1" id="idAddress1" #address1="ngModel" required>
+            <div [hidden]="address1.untouched || address1.valid" class="alert-sm alert-danger">
+              Address Line 1 is required
+            </div>
           </div>
           <div class="form-group">
             <label for="idAddress2">Address Line 2</label>
             <input type="text" [(ngModel)]="selectedContact.address2" name="address2" class="form-control"
-                   placeholder="Address 2" id="idAddress2">
+                   placeholder="Address 2" id="idAddress2" #address2="ngModel" required>
+            <div [hidden]="address2.untouched || address2.valid" class="alert-sm alert-danger">
+              Address Line 2is required
+            </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="inputCity">City</label>
               <input type="text" [(ngModel)]="selectedContact.city" name="city" class="form-control" id="inputCity"
-                     placeholder="City">
+                     placeholder="City" #city="ngModel" required>
+              <div [hidden]="city.untouched || city.valid" class="alert-sm alert-danger">
+                City is required
+              </div>
             </div>
             <div class="form-group col-md-4">
               <label for="idCounty">County</label>
               <input type="text" [(ngModel)]="selectedContact.county" name="county" class="form-control"
-                     placeholder="County" id="idCounty">
+                     placeholder="County" id="idCounty" #county="ngModel" required>
+              <div [hidden]="county.untouched || county.valid" class="alert-sm alert-danger">
+                County is required
+              </div>
             </div>
             <div class="form-group col-md-2">
               <label for="idPostcode">Postcode</label>
               <input type="text" [(ngModel)]="selectedContact.postcode" name="postcode" class="form-control"
-                     placeholder="Postcode" id="idPostcode">
+                     placeholder="Postcode" id="idPostcode" #postcode="ngModel" required>
+              <div [hidden]="postcode.untouched || postcode.valid" class="alert-sm alert-danger">
+                Postcode is required
+              </div>
             </div>
           </div>
         </form>

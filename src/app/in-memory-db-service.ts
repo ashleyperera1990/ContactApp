@@ -43,7 +43,7 @@ export class InMemoryDBService implements InMemoryDbService {
         contact1,
         'Call about mission',
         reminderType2,
-        '20/02/2018',
+        new Date('2018/03/24'),
         'Call to discuss the outline of the mission'),
       new Reminder(
         2,
@@ -51,7 +51,7 @@ export class InMemoryDBService implements InMemoryDbService {
         contact1,
         'Meet about the upcoming mission',
         reminderType3,
-        '28/02/2018',
+        new Date('2018/03/24'),
         'Briefing for the upcoming mission is at 09:00 on the 28th, do not be late!'
       ),
       new Reminder(
@@ -60,7 +60,7 @@ export class InMemoryDBService implements InMemoryDbService {
         contact2,
         'Get to france',
         reminderType3,
-        '230/03/2018',
+        new Date('2018/03/24'),
         'I can help you find out who you are'
       )
     ];

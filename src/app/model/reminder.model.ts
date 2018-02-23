@@ -8,7 +8,7 @@ export class Reminder {
               public contact: Contact,
               public subject: string,
               public type: ReminderType,
-              public date: string,
+              public date: Date,
               public message: string) {
   }
 

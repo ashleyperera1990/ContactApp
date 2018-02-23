@@ -1,7 +1,9 @@
 <div class="inner-nav p-2">
   <div class="buttons justify-content-center">
     <button (click)="newReminder()" class="btn btn-success btn-sm">New Reminder</button>
-    <button (click)="saveOrUpdateReminder()" class="btn btn-primary btn-sm">Add / Save Reminder</button>
+    <button type="submit" (click)="saveOrUpdateReminder()" [disabled]="!reminderForm.form.valid"
+            class="btn btn-primary btn-sm">Add / Save Reminder
+    </button>
     <button (click)="deleteReminder()" class="btn btn-danger btn-sm">Delete Reminder</button>
   </div>
 </div>
@@ -14,7 +16,8 @@
       </div>
       <div class="card-body">
         <ul class="list-group">
-          <li class="list-group-item" *ngFor="let reminder of allReminders | reminderFilter: searchTerm" (click)="selectReminder(reminder)">
+          <li class="list-group-item" *ngFor="let reminder of allReminders | reminderFilter: searchTerm"
+              (click)="selectReminder(reminder)">
             {{ reminder.contact.firstName }} {{ reminder.contact.lastName }} - {{ reminder.subject }}
           </li>
         </ul>
@@ -24,39 +27,63 @@
   <div class="col-sm-8">
     <div class="card">
       <div class="p-2">
-        <form action="">
+        <form (ngSubmit)="onsubmit()" #reminderForm="ngForm">
           <div class="form-row">
             <div class="col">
               <label for="idContactSelect">Contact</label>
-              <select [compareWith]="equals" id="idContactSelect" [(ngModel)]="selectedReminder.contact" name="contact"
-                      class="form-control">
-                <option *ngFor="let contact of allContacts" [ngValue]="contact">{{contact.firstName}} {{
-                  contact.lastName }}
+              <select id="idContactSelect"
+                      [(ngModel)]="selectedReminder.contact"
+                      name="contact"
+                      [compareWith]="equals"
+                      #contact="ngModel"
+                      class="form-control"
+                      required>
+                <option [value]="null" disabled>Please Select</option>
+                <option *ngFor="let contact of allContacts" [ngValue]="contact">
+                  {{contact.firstName}} {{ contact.lastName }}
                 </option>
               </select>
+              <div [hidden]="contact.untouched || contact.valid" class="alert-sm alert-danger">
+                Contact is required
+              </div>
             </div>
             <div class="col">
               <label for="idTypeSelect">Type</label>
               <select [compareWith]="equals" id="idTypeSelect" [(ngModel)]="selectedReminder.type" name="type"
-                      class="form-control">
+                      class="form-control" #type="ngModel" required>
+                <option [value]="null">Please Select</option>
                 <option *ngFor="let type of reminderTypes" [ngValue]="type">{{type.typeName}}</option>
               </select>
+              <div [hidden]="type.untouched || type.valid" class="alert-sm alert-danger">
+                Type is required
+              </div>
             </div>
             <div class="col">
-              <label for="idDateSelect">Date</label>
-              <input type="text" id="idDateSelect" [(ngModel)]="selectedReminder.date" name="date"
-                     class="form-control"/>
+              <label for="idDate">Date</label>
+              <div class="input-group">
+                <input id="idDate" class="form-control" placeholder="yyyy-mm-dd"
+                       name="dp" [(ngModel)]="dateModel" ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                    <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="form-group">
             <label for="idSubject">Subject</label>
-            <input type="text" class="form-control" option [(ngModel)]="selectedReminder.subject" name="subject"
-                   placeholder="Subject" id="idSubject">
+            <input type="text" class="form-control" [(ngModel)]="selectedReminder.subject" #subject="ngModel"
+                   name="subject"
+                   placeholder="Subject" id="idSubject" required>
+            <div [hidden]="subject.untouched || subject.valid" class="alert-sm alert-danger">
+              Subject is required
+            </div>
           </div>
           <div class="form-group">
             <label for="idMessage">Message</label>
             <textarea rows="10" class="form-control" [(ngModel)]="selectedReminder.message" name="message"
-                      id="idMessage"></textarea>
+                      id="idMessage" required></textarea>
           </div>
         </form>
       </div>
